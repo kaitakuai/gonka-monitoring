@@ -1,0 +1,798 @@
+{
+ "uid": "gonka-fleet",
+ "title": "Gonka fleet",
+ "schemaVersion": 39,
+ "editable": true,
+ "time": {
+  "from": "now-6h",
+  "to": "now"
+ },
+ "tags": [
+  "gonka"
+ ],
+ "links": [
+  {
+   "title": "Gonka dashboards",
+   "type": "dashboards",
+   "tags": [
+    "gonka"
+   ],
+   "asDropdown": true,
+   "includeVars": true,
+   "keepTime": true,
+   "icon": "apps",
+   "targetBlank": false
+  }
+ ],
+ "templating": {
+  "list": []
+ },
+ "annotations": {
+  "list": [
+   {
+    "builtIn": 1,
+    "name": "Annotations & Alerts",
+    "type": "dashboard",
+    "datasource": {
+     "type": "grafana",
+     "uid": "-- Grafana --"
+    },
+    "enable": true,
+    "hide": true,
+    "iconColor": "rgba(0, 211, 255, 1)"
+   },
+   {
+    "name": "PoC",
+    "type": "tags",
+    "datasource": {
+     "type": "grafana",
+     "uid": "-- Grafana --"
+    },
+    "enable": true,
+    "iconColor": "orange",
+    "tags": [
+     "poc"
+    ]
+   },
+   {
+    "name": "cPoC",
+    "type": "tags",
+    "datasource": {
+     "type": "grafana",
+     "uid": "-- Grafana --"
+    },
+    "enable": true,
+    "iconColor": "purple",
+    "tags": [
+     "cpoc"
+    ]
+   }
+  ]
+ },
+ "panels": [
+  {
+   "type": "text",
+   "title": "",
+   "transparent": true,
+   "gridPos": {
+    "h": 3,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   },
+   "options": {
+    "mode": "markdown",
+    "content": "### Gonka fleet \u2014 your ML nodes\n`Input`/`Output tokens` count **all engine work, including validation re-runs**, so they are higher than the chain's billed-inference figure. Click a row in the table to drill into a single ML node."
+   }
+  },
+  {
+   "type": "stat",
+   "title": "mlnodes total",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 0,
+    "y": 3
+   },
+   "options": {
+    "colorMode": "value",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "textMode": "value",
+    "justifyMode": "auto"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "decimals": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "text"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "expr": "count(mlnode_up{job=\"gonka-epoch\"})",
+     "refId": "A",
+     "instant": true
+    }
+   ]
+  },
+  {
+   "type": "stat",
+   "title": "mlnodes up",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 4,
+    "y": 3
+   },
+   "options": {
+    "colorMode": "value",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "textMode": "value",
+    "justifyMode": "auto"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "decimals": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "green"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "expr": "count(mlnode_up{job=\"gonka-epoch\"} == 1)",
+     "refId": "A",
+     "instant": true
+    }
+   ]
+  },
+  {
+   "type": "stat",
+   "title": "running reqs",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 8,
+    "y": 3
+   },
+   "options": {
+    "colorMode": "value",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "textMode": "value",
+    "justifyMode": "auto"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "decimals": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "text"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "expr": "sum(vllm:num_requests_running{job=\"gonka-epoch\"})",
+     "refId": "A",
+     "instant": true
+    }
+   ]
+  },
+  {
+   "type": "stat",
+   "title": "Requests processed (selected range)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 12,
+    "y": 3
+   },
+   "options": {
+    "colorMode": "value",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "textMode": "value",
+    "justifyMode": "auto"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "locale",
+     "decimals": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "expr": "sum(increase(vllm:request_success_total{job=\"gonka-epoch\"}[$__range]))",
+     "refId": "A",
+     "instant": true
+    }
+   ]
+  },
+  {
+   "type": "stat",
+   "title": "Input tokens (selected range)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 16,
+    "y": 3
+   },
+   "options": {
+    "colorMode": "value",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "textMode": "value",
+    "justifyMode": "auto"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "locale",
+     "decimals": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "expr": "sum(increase(vllm:prompt_tokens_total{job=\"gonka-epoch\"}[$__range]))",
+     "refId": "A",
+     "instant": true
+    }
+   ]
+  },
+  {
+   "type": "stat",
+   "title": "Output tokens (selected range)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "description": "",
+   "gridPos": {
+    "h": 5,
+    "w": 4,
+    "x": 20,
+    "y": 3
+   },
+   "options": {
+    "colorMode": "value",
+    "graphMode": "area",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "textMode": "value",
+    "justifyMode": "auto"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "locale",
+     "decimals": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "targets": [
+    {
+     "expr": "sum(increase(vllm:generation_tokens_total{job=\"gonka-epoch\"}[$__range]))",
+     "refId": "A",
+     "instant": true
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Tokens /s by mlnode",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "gridPos": {
+    "h": 7,
+    "w": 12,
+    "x": 0,
+    "y": 8
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "drawStyle": "line",
+      "fillOpacity": 8,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "expr": "sum by (node_id)(rate(vllm:generation_tokens_total{job=\"gonka-epoch\"}[5m]))",
+     "refId": "A",
+     "legendFormat": "{{node_id}}"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Requests running by mlnode (+ waiting total)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "gridPos": {
+    "h": 7,
+    "w": 12,
+    "x": 12,
+    "y": 8
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "drawStyle": "line",
+      "fillOpacity": 8,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "expr": "sum by (node_id)(vllm:num_requests_running{job=\"gonka-epoch\"})",
+     "refId": "A",
+     "legendFormat": "{{node_id}}"
+    },
+    {
+     "expr": "sum(vllm:num_requests_waiting{job=\"gonka-epoch\"})",
+     "refId": "B",
+     "legendFormat": "waiting (total)"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "TTFT p95 (10m) by mlnode",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "gridPos": {
+    "h": 7,
+    "w": 12,
+    "x": 0,
+    "y": 15
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "custom": {
+      "drawStyle": "line",
+      "fillOpacity": 8,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "expr": "histogram_quantile(0.95, sum by (node_id,le)(rate(vllm:time_to_first_token_seconds_bucket{job=\"gonka-epoch\"}[10m])))",
+     "refId": "A",
+     "legendFormat": "{{node_id}}"
+    }
+   ]
+  },
+  {
+   "type": "timeseries",
+   "title": "Prompt vs generation tokens /s",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "gridPos": {
+    "h": 7,
+    "w": 12,
+    "x": 12,
+    "y": 15
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "custom": {
+      "drawStyle": "line",
+      "fillOpacity": 8,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "expr": "sum(rate(vllm:prompt_tokens_total{job=\"gonka-epoch\"}[5m]))",
+     "refId": "A",
+     "legendFormat": "prompt (input)"
+    },
+    {
+     "expr": "sum(rate(vllm:generation_tokens_total{job=\"gonka-epoch\"}[5m]))",
+     "refId": "B",
+     "legendFormat": "generation (output)"
+    }
+   ]
+  },
+  {
+   "type": "table",
+   "title": "mlnodes (click a row to drill down)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "vm"
+   },
+   "gridPos": {
+    "h": 10,
+    "w": 24,
+    "x": 0,
+    "y": 22
+   },
+   "options": {
+    "showHeader": true,
+    "sortBy": [
+     {
+      "displayName": "tokens/s",
+      "desc": true
+     }
+    ]
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "instant": true,
+     "format": "table",
+     "expr": "max by (node_id)(mlnode_up{job=\"gonka-epoch\"})"
+    },
+    {
+     "refId": "B",
+     "instant": true,
+     "format": "table",
+     "expr": "sum by (node_id)(rate(vllm:generation_tokens_total{job=\"gonka-epoch\"}[5m]))"
+    },
+    {
+     "refId": "C",
+     "instant": true,
+     "format": "table",
+     "expr": "sum by (node_id)(rate(vllm:prompt_tokens_total{job=\"gonka-epoch\"}[5m]))"
+    },
+    {
+     "refId": "D",
+     "instant": true,
+     "format": "table",
+     "expr": "max by (node_id)(vllm:num_requests_running{job=\"gonka-epoch\"})"
+    },
+    {
+     "refId": "E",
+     "instant": true,
+     "format": "table",
+     "expr": "max by (node_id,model_name)(vllm:num_requests_running{job=\"gonka-epoch\"})"
+    },
+    {
+     "refId": "F",
+     "instant": true,
+     "format": "table",
+     "expr": "max by (node_id,version)(mlnode_version_info{job=\"gonka-epoch\"})"
+    }
+   ],
+   "transformations": [
+    {
+     "id": "joinByField",
+     "options": {
+      "byField": "node_id",
+      "mode": "outer"
+     }
+    },
+    {
+     "id": "organize",
+     "options": {
+      "renameByName": {
+       "node_id": "mlnode",
+       "model_name": "model",
+       "version": "version",
+       "Value #A": "up",
+       "Value #B": "gen tok/s",
+       "Value #C": "prompt tok/s",
+       "Value #D": "running"
+      },
+      "excludeByName": {
+       "Time": true,
+       "Time 1": true,
+       "Time 2": true,
+       "Time 3": true,
+       "Time 4": true,
+       "Time 5": true,
+       "Time 6": true,
+       "Value #E": true,
+       "Value #F": true
+      }
+     }
+    }
+   ],
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "align": "center",
+      "filterable": true
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "mlnode"
+      },
+      "properties": [
+       {
+        "id": "custom.align",
+        "value": "left"
+       },
+       {
+        "id": "custom.width",
+        "value": 200
+       },
+       {
+        "id": "links",
+        "value": [
+         {
+          "title": "drill-down",
+          "url": "/d/gonka-node/gonka-mlnode-drill-down?var-node_id=${__value.text}"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "version"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 110
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "up"
+      },
+      "properties": [
+       {
+        "id": "custom.width",
+        "value": 95
+       },
+       {
+        "id": "custom.cellOptions",
+        "value": {
+         "type": "color-background",
+         "mode": "basic"
+        }
+       },
+       {
+        "id": "thresholds",
+        "value": {
+         "mode": "absolute",
+         "steps": [
+          {
+           "color": "red",
+           "value": null
+          },
+          {
+           "color": "green",
+           "value": 1
+          }
+         ]
+        }
+       },
+       {
+        "id": "custom.displayMode",
+        "value": "color-background"
+       },
+       {
+        "id": "mappings",
+        "value": [
+         {
+          "type": "value",
+          "options": {
+           "0": {
+            "text": "no",
+            "index": 0
+           },
+           "1": {
+            "text": "yes",
+            "index": 1
+           }
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "gen tok/s"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "short"
+       },
+       {
+        "id": "decimals",
+        "value": 1
+       },
+       {
+        "id": "custom.width",
+        "value": 120
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "prompt tok/s"
+      },
+      "properties": [
+       {
+        "id": "unit",
+        "value": "short"
+       },
+       {
+        "id": "decimals",
+        "value": 1
+       },
+       {
+        "id": "custom.width",
+        "value": 130
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "running"
+      },
+      "properties": [
+       {
+        "id": "decimals",
+        "value": 0
+       },
+       {
+        "id": "custom.width",
+        "value": 105
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "model"
+      },
+      "properties": [
+       {
+        "id": "custom.align",
+        "value": "left"
+       },
+       {
+        "id": "custom.width",
+        "value": 360
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

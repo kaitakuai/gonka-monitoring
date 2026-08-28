@@ -1,0 +1,62 @@
+name: gonka-grafana
+
+services:
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.115.0
+    container_name: gonka-vm
+    command:
+      - -promscrape.config=/etc/vm/scrape.yml
+      - -retentionPeriod=${RETENTION:-90d}
+      - -storageDataPath=/vmdata
+      - -httpListenAddr=:8428
+    environment:
+      - GONKA_NODE=${GONKA_NODE:?set GONKA_NODE in .env}
+      - GONKA_SCHEME=${GONKA_SCHEME:-http}
+    volumes:
+      - ./scrape.yml:/etc/vm/scrape.yml:ro
+      - vmdata:/vmdata
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.6.0
+    container_name: gonka-grafana
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/dashboards:ro
+      - grafanadata:/var/lib/grafana
+    depends_on:
+      - victoriametrics
+    restart: unless-stopped
+
+  # Optional: PoC / cPoC phase shading. Enable with:
+  #   docker compose --profile phases up -d
+  # Needs your Gonka node's Tendermint RPC (GONKA_RPC) reachable from here.
+  phase-annotator:
+    image: ${INFERENCED_IMAGE:-ghcr.io/product-science/inferenced:0.2.15}
+    container_name: gonka-phase-annotator
+    profiles: ["phases"]
+    entrypoint: ["/bin/sh", "/annotate.sh"]
+    environment:
+      - GONKA_RPC=${GONKA_RPC:?set GONKA_RPC for the phases profile}
+      - GRAFANA_URL=http://grafana:3000
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - POLL_INTERVAL=${POLL_INTERVAL:-30}
+      - STATE_FILE=/data/phase_state
+    volumes:
+      - ./phases/annotate.sh:/annotate.sh:ro
+      - phasestate:/data
+    depends_on:
+      - grafana
+    restart: unless-stopped
+
+volumes:
+  phasestate:
+  vmdata:
+  grafanadata:
