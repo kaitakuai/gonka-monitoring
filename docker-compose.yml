@@ -9,11 +9,9 @@ services:
       - -retentionPeriod=${RETENTION:-90d}
       - -storageDataPath=/vmdata
       - -httpListenAddr=:8428
-    environment:
-      - GONKA_NODE=${GONKA_NODE:?set GONKA_NODE in .env}
-      - GONKA_SCHEME=${GONKA_SCHEME:-http}
     volumes:
       - ./scrape.yml:/etc/vm/scrape.yml:ro
+      - sd:/etc/vm/sd:ro
       - vmdata:/vmdata
     restart: unless-stopped
 
@@ -31,6 +29,26 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/etc/dashboards:ro
       - grafanadata:/var/lib/grafana
+    depends_on:
+      - victoriametrics
+    restart: unless-stopped
+
+  # Epoch auto-discovery: builds the scrape target list from the current
+  # epoch's active participants (whole network), plus participant weights.
+  discovery:
+    image: ${INFERENCED_IMAGE:-ghcr.io/product-science/inferenced:0.2.15}
+    container_name: gonka-discovery
+    entrypoint: ["/bin/sh", "/discover.sh"]
+    environment:
+      - GONKA_RPC=${GONKA_RPC:?set GONKA_RPC in .env}
+      - GONKA_NODE=${GONKA_NODE:?set GONKA_NODE in .env}
+      - GONKA_SCHEME=${GONKA_SCHEME:-http}
+      - VM_URL=http://victoriametrics:8428
+      - SD_FILE=/sd/targets.json
+      - DISCOVERY_INTERVAL=${DISCOVERY_INTERVAL:-60}
+    volumes:
+      - ./discovery/discover.sh:/discover.sh:ro
+      - sd:/sd
     depends_on:
       - victoriametrics
     restart: unless-stopped
@@ -57,6 +75,7 @@ services:
     restart: unless-stopped
 
 volumes:
+  sd:
   phasestate:
   vmdata:
   grafanadata:

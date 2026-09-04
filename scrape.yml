@@ -1,12 +1,12 @@
 # VictoriaMetrics scrape config.
-# The placeholders below are filled from environment variables set in .env /
-# docker-compose. Point GONKA_NODE at any node serving /v1/mlnodes/metrics.
+# Targets come from the discovery service (file_sd), which rebuilds them from the
+# current epoch's active participants. Nothing to edit here.
 global:
   scrape_interval: 30s
 scrape_configs:
   - job_name: gonka-epoch
     metrics_path: /v1/mlnodes/metrics
-    scheme: "%{GONKA_SCHEME}"
     scrape_timeout: 10s
-    static_configs:
-      - targets: ["%{GONKA_NODE}"]
+    file_sd_configs:
+      - files:
+          - /etc/vm/sd/targets.json
