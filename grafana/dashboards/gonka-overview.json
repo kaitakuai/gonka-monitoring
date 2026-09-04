@@ -71,6 +71,21 @@
  },
  "panels": [
   {
+   "type": "text",
+   "title": "",
+   "transparent": true,
+   "gridPos": {
+    "h": 3,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   },
+   "options": {
+    "mode": "markdown",
+    "content": "**About the numbers.** *Input / Output tokens* count **all** work the inference engines did \u2014 including validation re-runs (Gonka re-executes a share of inference to verify it) \u2014 so they are **higher than the chain's billed-inference figures**. That is expected, not a bug. Click a row to drill down."
+   }
+  },
+  {
    "type": "stat",
    "title": "Network nodes",
    "datasource": {
@@ -82,7 +97,7 @@
     "h": 5,
     "w": 6,
     "x": 0,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -126,7 +141,7 @@
     "h": 5,
     "w": 6,
     "x": 6,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -170,7 +185,7 @@
     "h": 5,
     "w": 6,
     "x": 12,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -214,7 +229,7 @@
     "h": 5,
     "w": 6,
     "x": 18,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -258,7 +273,7 @@
     "h": 5,
     "w": 6,
     "x": 0,
-    "y": 5
+    "y": 8
    },
    "options": {
     "colorMode": "value",
@@ -302,7 +317,7 @@
     "h": 5,
     "w": 6,
     "x": 6,
-    "y": 5
+    "y": 8
    },
    "options": {
     "colorMode": "value",
@@ -346,7 +361,7 @@
     "h": 5,
     "w": 6,
     "x": 12,
-    "y": 5
+    "y": 8
    },
    "options": {
     "colorMode": "value",
@@ -390,7 +405,7 @@
     "h": 5,
     "w": 6,
     "x": 18,
-    "y": 5
+    "y": 8
    },
    "options": {
     "colorMode": "value",
@@ -430,10 +445,10 @@
     "uid": "vm"
    },
    "gridPos": {
-    "h": 42,
+    "h": 43,
     "w": 24,
     "x": 0,
-    "y": 10
+    "y": 13
    },
    "options": {
     "showHeader": true,

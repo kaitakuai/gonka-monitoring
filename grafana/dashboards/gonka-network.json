@@ -90,6 +90,21 @@
  },
  "panels": [
   {
+   "type": "text",
+   "title": "",
+   "transparent": true,
+   "gridPos": {
+    "h": 3,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   },
+   "options": {
+    "mode": "markdown",
+    "content": "**About the numbers.** *Input / Output tokens* count **all** work the inference engines did \u2014 including validation re-runs (Gonka re-executes a share of inference to verify it) \u2014 so they are **higher than the chain's billed-inference figures**. That is expected, not a bug. Click a row to drill down."
+   }
+  },
+  {
    "type": "stat",
    "title": "mlnodes total",
    "datasource": {
@@ -101,7 +116,7 @@
     "h": 5,
     "w": 4,
     "x": 0,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -145,7 +160,7 @@
     "h": 5,
     "w": 4,
     "x": 4,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -189,7 +204,7 @@
     "h": 5,
     "w": 4,
     "x": 8,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -233,7 +248,7 @@
     "h": 5,
     "w": 4,
     "x": 12,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -277,7 +292,7 @@
     "h": 5,
     "w": 4,
     "x": 16,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -321,7 +336,7 @@
     "h": 5,
     "w": 4,
     "x": 20,
-    "y": 0
+    "y": 3
    },
    "options": {
     "colorMode": "value",
@@ -364,7 +379,7 @@
     "h": 7,
     "w": 12,
     "x": 0,
-    "y": 5
+    "y": 8
    },
    "fieldConfig": {
     "defaults": {
@@ -405,7 +420,7 @@
     "h": 7,
     "w": 12,
     "x": 12,
-    "y": 5
+    "y": 8
    },
    "fieldConfig": {
     "defaults": {
@@ -451,7 +466,7 @@
     "h": 7,
     "w": 12,
     "x": 0,
-    "y": 12
+    "y": 15
    },
    "fieldConfig": {
     "defaults": {
@@ -492,7 +507,7 @@
     "h": 7,
     "w": 12,
     "x": 12,
-    "y": 12
+    "y": 15
    },
    "fieldConfig": {
     "defaults": {
@@ -538,7 +553,7 @@
     "h": 10,
     "w": 24,
     "x": 0,
-    "y": 19
+    "y": 22
    },
    "options": {
     "showHeader": true,
