@@ -33,6 +33,9 @@ each Gonka node already federates its own ML nodes into that one endpoint.
 - Docker + Docker Compose
 - A synced Gonka network node you can reach: its Tendermint **RPC** (`:26657`) and its
   HTTP API (`:8000`, serves `/v1/participants`)
+- Any amd64 host. On arm64 (Apple Silicon, Graviton) the `inferenced` image used by
+  `discovery` is amd64-only: Docker runs it under emulation and prints a platform
+  warning at start-up; the stack works.
 
 ## Quickstart
 

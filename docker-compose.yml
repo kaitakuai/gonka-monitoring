@@ -1,4 +1,4 @@
-name: gonka-grafana
+name: gonka-monitoring
 
 services:
   victoriametrics:
